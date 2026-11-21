@@ -207,16 +207,19 @@ fun ScrollModifiers(modifier: Modifier = Modifier) {
 @Composable
 fun MultiTouchDemo(modifier: Modifier = Modifier) {
     var scale by remember { mutableFloatStateOf(1f) }
+    var angle by remember { mutableFloatStateOf(0f) }
     val state = rememberTransformableState {
-            scaleChange, _, _ ->
+            scaleChange, _, rotationChange ->
         scale *= scaleChange
+        angle += rotationChange
     }
     Box(contentAlignment = Alignment.Center, modifier = modifier.fillMaxSize()) {
         Box(
             Modifier
                 .graphicsLayer(
                     scaleX = scale,
-                    scaleY = scale
+                    scaleY = scale,
+                    rotationZ = angle
                 )
                 .transformable(state = state)
                 .background(Color.Blue)
